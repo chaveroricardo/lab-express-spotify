@@ -54,5 +54,33 @@ app.locals.title = 'Express - Generated with IronGenerator';
 const index = require('./routes/index');
 app.use('/', index);
 
-
 module.exports = app;
+
+var SpotifyWebApi = require('spotify-web-api-node');
+
+// Remember to paste your credentials here
+var clientId = 'ca32647a7946480bbb018a7437c25a6f',
+    clientSecret = '549a03b567f24796b4ac280640083601';
+
+var spotifyApi = new SpotifyWebApi({
+  clientId : clientId,
+  clientSecret : clientSecret
+});
+
+// Retrieve an access token.
+spotifyApi.clientCredentialsGrant()
+  .then(function(data) {
+    spotifyApi.setAccessToken(data.body['access_token']);
+  }, function(err) {
+    console.log('Something went wrong when retrieving an access token', err);
+});
+
+// // Get Elvis' albums
+// spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE').then(
+//   function(data) {
+//     console.log('Artist albums', data.body);
+//   },
+//   function(err) {
+//     console.error(err);
+//   }
+// );
